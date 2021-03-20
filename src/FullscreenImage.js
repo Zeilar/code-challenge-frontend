@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
-import { mdiArrowRight, mdiArrowLeft, mdiClose } from "@mdi/js";
+import { mdiArrowRight, mdiArrowLeft, mdiClose, mdiLoading } from "@mdi/js";
 import Icon from "@mdi/react";
+import useImage from "./useImage";
 
 export default function FullscreenImage({
 	image = {},
@@ -12,6 +13,8 @@ export default function FullscreenImage({
 	nextImage,
 	close,
 }) {
+	const { loaded, fetching } = useImage(image.urls.regular);
+
 	function keyHandler(e) {
 		if (e.key === "ArrowRight") {
 			goToNextImage();
@@ -37,72 +40,83 @@ export default function FullscreenImage({
 		};
 	}, [image]);
 
-	console.log(image);
+	const imageElement = useRef();
 
 	return (
-		<Wrapper ref={forwardRef}>
+		<Wrapper>
 			<CloseButton onClick={close} />
-			<PreviousButton
-				onClick={goToPreviousImage}
-				disabled={!Boolean(previousImage)}
-			>
-				Previous
-			</PreviousButton>
-			<Container>
-				<Image
-					src={image.urls.regular}
-					title={image.alt_description}
-					alt={image.alt_description}
-				/>
-				<ImagePostedBy>
-					Posted by <b>{image.user.username}</b> on &nbsp;
-					<AuthorLink href={image.links.html}>Unsplash</AuthorLink>
-				</ImagePostedBy>
-			</Container>
-			<NextButton onClick={goToNextImage} disabled={!Boolean(nextImage)}>
-				Next
-			</NextButton>
+			<ImageContainer ref={forwardRef}>
+				<PreviousButton
+					onClick={goToPreviousImage}
+					disabled={!Boolean(previousImage)}
+				>
+					Previous
+				</PreviousButton>
+				{fetching && <Loading />}
+				{loaded && (
+					<>
+						<Image
+							src={image.urls.regular}
+							title={image.alt_description}
+							alt={image.alt_description}
+							ref={imageElement}
+						/>
+						<ImageMeta>
+							<ImagePostedBy>
+								Posted by <b>{image.user.username}</b> on &nbsp;
+								<AuthorLink href={image.links.html}>
+									Unsplash
+								</AuthorLink>
+							</ImagePostedBy>
+						</ImageMeta>
+					</>
+				)}
+				<NextButton
+					onClick={goToNextImage}
+					disabled={!Boolean(nextImage)}
+				>
+					Next
+				</NextButton>
+			</ImageContainer>
 		</Wrapper>
 	);
 }
 
 const Wrapper = styled.div`
-	transform: translate(-50%, -50%);
-	background-color: rgb(0, 0, 0, 0.85);
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	left: 50%;
-	top: 50%;
-	z-index: 100;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
+	background-color: rgba(0, 0, 0, 0.75);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	top: 0;
+	left: 0;
 `;
 
-const Container = styled.article`
+const ImageContainer = styled.article`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin: 30px;
-	max-width: 25%;
 	position: relative;
 `;
 
-const ImagePostedBy = styled.p`
+const ImageMeta = styled.div`
 	position: absolute;
-	left: 0;
-	bottom: 0;
-	padding: 15px;
-	color: rgb(235 235 235);
-	background-color: rgba(0, 0, 0, 0.75);
 	width: 100%;
 `;
 
+const ImagePostedBy = styled.p`
+	padding: 15px;
+	color: rgb(235 235 235);
+	background-color: rgba(0, 0, 0, 0.75);
+`;
+
 const Image = styled.img.attrs({ loading: "lazy" })`
-	object-fit: cover;
-	width: 100%;
+	object-fit: contain;
 	height: 100%;
 	user-select: none;
 `;
@@ -118,12 +132,14 @@ const navigationButtons = css`
         opacity: 0;
         pointer-events: none;
     `}
-	position: absolute;
+	position: fixed;
 	color: rgb(235 235 235);
+	background-color: rgba(0, 0, 0, 0.5);
 	width: 50px;
 	height: 50px;
 	cursor: pointer;
 	margin: auto 0;
+	z-index: 1000;
 	transform: translateY(-50%);
 	@media (max-width: 768px) {
 		width: 35px;
@@ -134,10 +150,7 @@ const navigationButtons = css`
 const PreviousButton = styled(Icon).attrs({ path: mdiArrowLeft })`
 	${navigationButtons}
 	top: 50%;
-	left: 200px;
-	@media (max-width: 1200px) {
-		left: 30px;
-	}
+	left: 30px;
 	@media (max-width: 768px) {
 		left: 15px;
 	}
@@ -146,10 +159,7 @@ const PreviousButton = styled(Icon).attrs({ path: mdiArrowLeft })`
 const NextButton = styled(Icon).attrs({ path: mdiArrowRight })`
 	${navigationButtons}
 	top: 50%;
-	right: 200px;
-	@media (max-width: 1200px) {
-		right: 30px;
-	}
+	right: 30px;
 	@media (max-width: 768px) {
 		right: 15px;
 	}
@@ -160,4 +170,8 @@ const CloseButton = styled(Icon).attrs({ path: mdiClose })`
 	transform: none;
 	right: 30px;
 	top: 30px;
+`;
+
+const Loading = styled(Icon).attrs({ path: mdiLoading, size: 3, spin: 1 })`
+	color: rgb(235 235 235);
 `;
