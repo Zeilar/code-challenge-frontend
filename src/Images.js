@@ -40,7 +40,9 @@ export default function Images() {
 		}
 	}
 
-	const fullscreenContainer = useOnclickOutside(closeFullscreen);
+	const fullscreenContainer = useOnclickOutside(() => {
+		toggleFullscreen();
+	});
 
 	async function fetchImages({ pageParam = 1 }) {
 		const response = await fetch(
@@ -68,18 +70,16 @@ export default function Images() {
 		return combined;
 	}
 
-	function thumbnailClickHandler(image) {
-		setFullscreen(true);
-		setActiveImage(image);
-	}
-
-	function closeFullscreen() {
-		setFullscreen(false);
-		setActiveImage(null);
+	function toggleFullscreen(image) {
+		setFullscreen(image ? true : false);
+		setActiveImage(image ? image : null);
 	}
 
 	useEffect(() => {
 		document.addEventListener("scroll", attemptToLoadMore);
+		return () => {
+			document.removeEventListener("scroll", attemptToLoadMore);
+		};
 	}, []);
 
 	return (
@@ -92,7 +92,7 @@ export default function Images() {
 					goToPreviousImage={goToPreviousImage}
 					previousImage={previousImage}
 					nextImage={nextImage}
-					close={closeFullscreen}
+					close={() => toggleFullscreen()}
 				/>
 			)}
 			<ImagesWrapper>
@@ -102,7 +102,7 @@ export default function Images() {
 						<Image
 							key={i}
 							image={image}
-							setActive={() => thumbnailClickHandler(image)}
+							setActive={() => toggleFullscreen(image)}
 						/>
 					))}
 			</ImagesWrapper>

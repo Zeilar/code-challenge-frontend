@@ -134,7 +134,7 @@ const navigationButtons = css`
     `}
 	position: fixed;
 	color: rgb(235 235 235);
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.65);
 	width: 50px;
 	height: 50px;
 	cursor: pointer;
