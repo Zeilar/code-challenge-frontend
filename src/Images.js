@@ -13,6 +13,7 @@ export default function Images() {
 		hasNextPage,
 		isFetchingNextPage,
 		status,
+		refetch,
 	} = useInfiniteQuery("images", fetchImages, {
 		getNextPageParam: (lastQuery) => lastQuery.nextPage,
 	});
@@ -106,6 +107,12 @@ export default function Images() {
 					))}
 			</ImagesWrapper>
 			{(status === "loading" || isFetchingNextPage) && <p>Loading</p>}
+			{error && (
+				<div>
+					<h2>Error loading images</h2>
+					<button onClick={() => refetch()}>Try again</button>
+				</div>
+			)}
 		</Wrapper>
 	);
 }
@@ -122,4 +129,11 @@ const ImagesWrapper = styled.div`
 	grid-auto-rows: 150px;
 	grid-gap: 15px;
 	margin: 15px;
+	@media (max-width: 1200px) {
+		grid-template-columns: repeat(3, 225px);
+	}
+	@media (max-width: 768px) {
+		grid-template-columns: repeat(2, 160px);
+		grid-auto-rows: 100px;
+	}
 `;
