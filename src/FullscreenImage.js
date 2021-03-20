@@ -37,6 +37,8 @@ export default function FullscreenImage({
 		};
 	}, [image]);
 
+	console.log(image);
+
 	return (
 		<Wrapper ref={forwardRef}>
 			<CloseButton onClick={close} />
@@ -47,14 +49,15 @@ export default function FullscreenImage({
 				Previous
 			</PreviousButton>
 			<Container>
-				<ImageContainer>
-					<Image
-						src={image.urls.regular}
-						title={image.alt_description}
-						alt={image.alt_description}
-					/>
-				</ImageContainer>
-				<ImageMeta></ImageMeta>
+				<Image
+					src={image.urls.regular}
+					title={image.alt_description}
+					alt={image.alt_description}
+				/>
+				<ImagePostedBy>
+					Posted by <b>{image.user.username}</b> on &nbsp;
+					<AuthorLink href={image.links.html}>Unsplash</AuthorLink>
+				</ImagePostedBy>
 			</Container>
 			<NextButton onClick={goToNextImage} disabled={!Boolean(nextImage)}>
 				Next
@@ -79,23 +82,33 @@ const Wrapper = styled.div`
 
 const Container = styled.article`
 	display: flex;
-	justify-content: center;
-	margin: 15px;
-`;
-
-const ImageContainer = styled.div`
-	display: flex;
-	justify-content: center;
+	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	margin: 30px;
+	max-width: 25%;
 	position: relative;
 `;
 
-const ImageMeta = styled.div``;
+const ImagePostedBy = styled.p`
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	padding: 15px;
+	color: rgb(235 235 235);
+	background-color: rgba(0, 0, 0, 0.75);
+	width: 100%;
+`;
 
 const Image = styled.img.attrs({ loading: "lazy" })`
-	object-fit: contain;
-	width: 80%;
-	height: 80%;
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+	user-select: none;
+`;
+
+const AuthorLink = styled.a.attrs({ target: "_blank" })`
+	color: rgb(0, 127, 255);
 `;
 
 const navigationButtons = css`
@@ -123,7 +136,7 @@ const PreviousButton = styled(Icon).attrs({ path: mdiArrowLeft })`
 	top: 50%;
 	left: 200px;
 	@media (max-width: 1200px) {
-		left: 50px;
+		left: 30px;
 	}
 	@media (max-width: 768px) {
 		left: 15px;
@@ -135,7 +148,7 @@ const NextButton = styled(Icon).attrs({ path: mdiArrowRight })`
 	top: 50%;
 	right: 200px;
 	@media (max-width: 1200px) {
-		right: 50px;
+		right: 30px;
 	}
 	@media (max-width: 768px) {
 		right: 15px;
