@@ -20,19 +20,19 @@ export default function Images() {
 	const [activeImage, setActiveImage] = useState();
 	const [fullscreen, setFullscreen] = useState(false);
 
-	const combinedImages = combinedImagesArray();
-	const indexOfActiveImage = combinedImages.findIndex(
+	const combinedImagesArray = mergeResultsArrays();
+	const indexOfActiveImage = combinedImagesArray.findIndex(
 		(image) => image.id === activeImage?.id
 	);
 
-	const nextImage = combinedImages[indexOfActiveImage + 1];
+	const nextImage = combinedImagesArray[indexOfActiveImage + 1];
 	function goToNextImage() {
 		if (nextImage) {
 			setActiveImage(nextImage);
 		}
 	}
 
-	const previousImage = combinedImages[indexOfActiveImage - 1];
+	const previousImage = combinedImagesArray[indexOfActiveImage - 1];
 	function goToPreviousImage() {
 		if (previousImage) {
 			setActiveImage(previousImage);
@@ -63,8 +63,8 @@ export default function Images() {
 
 	function attemptToLoadMore() {}
 
-	// Since every page result is in its own array, combine the arrays to see which is previous or next
-	function combinedImagesArray() {
+	// Since every page result is in its own array due to React Query, combine the arrays to see which is previous or next
+	function mergeResultsArrays() {
 		const combined = [];
 		data?.pages.forEach((page) => combined.push(...page.data));
 		return combined;
@@ -94,15 +94,13 @@ export default function Images() {
 			<ImagesWrapper>
 				<button onClick={() => fetchNextPage()}>More</button>
 				{status === "success" &&
-					data.pages.map((page) =>
-						page.data.map((image, i) => (
-							<Image
-								key={i}
-								image={image}
-								setActive={() => thumbnailClickHandler(image)}
-							/>
-						))
-					)}
+					combinedImagesArray.map((image, i) => (
+						<Image
+							key={i}
+							image={image}
+							setActive={() => thumbnailClickHandler(image)}
+						/>
+					))}
 			</ImagesWrapper>
 			{(status === "loading" || isFetchingNextPage) && <p>Loading</p>}
 		</Wrapper>
