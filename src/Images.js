@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useInfiniteQuery } from "react-query";
 import Image from "./Image";
+import FullscreenImage from "./FullscreenImage";
+import useOnclickOutside from "react-cool-onclickoutside";
 
 export default function Images() {
 	const {
@@ -9,7 +11,6 @@ export default function Images() {
 		error,
 		fetchNextPage,
 		hasNextPage,
-		isFetching,
 		isFetchingNextPage,
 		status,
 	} = useInfiniteQuery("images", fetchImages, {
@@ -17,11 +18,31 @@ export default function Images() {
 	});
 
 	const [activeImage, setActiveImage] = useState();
-	const indexOfActiveImage = combinedImagesArray().findIndex(
+	const [fullscreen, setFullscreen] = useState(false);
+
+	const combinedImages = combinedImagesArray();
+	const indexOfActiveImage = combinedImages.findIndex(
 		(image) => image.id === activeImage?.id
 	);
-	const nextImage = combinedImagesArray()[indexOfActiveImage + 1];
-	const previousImage = combinedImagesArray()[indexOfActiveImage - 1];
+
+	function goToNextImage() {
+		const nextImage = combinedImages[indexOfActiveImage + 1];
+		if (nextImage) {
+			setActiveImage(nextImage);
+		}
+	}
+
+	function goToPreviousImage() {
+		const previousImage = combinedImages[indexOfActiveImage - 1];
+		if (previousImage) {
+			setActiveImage(previousImage);
+		}
+	}
+
+	const fullscreenContainer = useOnclickOutside(() => {
+		setFullscreen(false);
+		setActiveImage(null);
+	});
 
 	async function fetchImages({ pageParam = 1 }) {
 		const response = await fetch(
@@ -49,21 +70,25 @@ export default function Images() {
 		return combined;
 	}
 
+	function thumbnailClickHandler(image) {
+		setFullscreen(true);
+		setActiveImage(image);
+	}
+
 	useEffect(() => {
 		document.addEventListener("scroll", attemptToLoadMore);
 	}, []);
 
-	// console.log(
-	// 	data?.pages,
-	// 	hasNextPage,
-	// 	status,
-	// 	isFetching,
-	// 	isFetchingNextPage
-	// );
-	// console.log(activeImage);
-
 	return (
 		<Wrapper>
+			{fullscreen && (
+				<FullscreenImage
+					image={activeImage}
+					forwardRef={fullscreenContainer}
+					goToNextImage={goToNextImage}
+					goToPreviousImage={goToPreviousImage}
+				/>
+			)}
 			<ImagesWrapper>
 				<button onClick={() => fetchNextPage()}>More</button>
 				{status === "success" &&
@@ -72,7 +97,7 @@ export default function Images() {
 							<Image
 								key={i}
 								image={image}
-								setActive={() => setActiveImage(image)}
+								setActive={() => thumbnailClickHandler(image)}
 							/>
 						))
 					)}
