@@ -25,15 +25,15 @@ export default function Images() {
 		(image) => image.id === activeImage?.id
 	);
 
+	const nextImage = combinedImages[indexOfActiveImage + 1];
 	function goToNextImage() {
-		const nextImage = combinedImages[indexOfActiveImage + 1];
 		if (nextImage) {
 			setActiveImage(nextImage);
 		}
 	}
 
+	const previousImage = combinedImages[indexOfActiveImage - 1];
 	function goToPreviousImage() {
-		const previousImage = combinedImages[indexOfActiveImage - 1];
 		if (previousImage) {
 			setActiveImage(previousImage);
 		}
@@ -87,6 +87,8 @@ export default function Images() {
 					forwardRef={fullscreenContainer}
 					goToNextImage={goToNextImage}
 					goToPreviousImage={goToPreviousImage}
+					previousImage={previousImage}
+					nextImage={nextImage}
 				/>
 			)}
 			<ImagesWrapper>
