@@ -39,10 +39,7 @@ export default function Images() {
 		}
 	}
 
-	const fullscreenContainer = useOnclickOutside(() => {
-		setFullscreen(false);
-		setActiveImage(null);
-	});
+	const fullscreenContainer = useOnclickOutside(closeFullscreen);
 
 	async function fetchImages({ pageParam = 1 }) {
 		const response = await fetch(
@@ -75,6 +72,11 @@ export default function Images() {
 		setActiveImage(image);
 	}
 
+	function closeFullscreen() {
+		setFullscreen(false);
+		setActiveImage(null);
+	}
+
 	useEffect(() => {
 		document.addEventListener("scroll", attemptToLoadMore);
 	}, []);
@@ -89,6 +91,7 @@ export default function Images() {
 					goToPreviousImage={goToPreviousImage}
 					previousImage={previousImage}
 					nextImage={nextImage}
+					close={closeFullscreen}
 				/>
 			)}
 			<ImagesWrapper>

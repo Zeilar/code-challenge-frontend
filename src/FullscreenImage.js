@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import styled, { css } from "styled-components";
 import { mdiArrowRight, mdiArrowLeft } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -10,12 +10,15 @@ export default function FullscreenImage({
 	goToNextImage,
 	previousImage,
 	nextImage,
+	close,
 }) {
 	function keyHandler(e) {
 		if (e.key === "ArrowRight") {
 			goToNextImage();
 		} else if (e.key === "ArrowLeft") {
 			goToPreviousImage();
+		} else if (e.key === "Escape") {
+			close();
 		}
 	}
 
@@ -29,7 +32,10 @@ export default function FullscreenImage({
 	return (
 		<Wrapper>
 			<Container ref={forwardRef}>
-				<PreviousButton onClick={goToPreviousImage}>
+				<PreviousButton
+					onClick={goToPreviousImage}
+					disabled={!Boolean(previousImage)}
+				>
 					Previous
 				</PreviousButton>
 				<ImageContainer>

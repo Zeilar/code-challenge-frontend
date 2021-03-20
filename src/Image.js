@@ -14,10 +14,10 @@ export default function Image({ image = {}, setActive }) {
 
 const Wrapper = styled.div`
 	overflow: hidden;
-	transition: all 0.1s linear;
+	transition: transform 0.1s linear;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
 	cursor: pointer;
 	&:hover {
-		box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
 		transform: scale(1.05);
 	}
 `;
