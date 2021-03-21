@@ -14,3 +14,11 @@ body {
 	color: rgb(30 30 30);
 	background-color: rgb(235 235 235);
 }
+
+img {
+	max-width: 100%;
+}
+
+button {
+	cursor: pointer;
+}
