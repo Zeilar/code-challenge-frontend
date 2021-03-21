@@ -203,9 +203,10 @@ const ScrollToTop = styled(Icon).attrs({ path: mdiArrowDown })`
 	bottom: 30px;
 	right: 30px;
 	opacity: 0;
+	pointer-events: none;
 	&.visible {
+		pointer-events: all;
 		opacity: 1;
-		pointer-events: none;
 	}
 	@media (max-width: 768px) {
 		bottom: 15px;
