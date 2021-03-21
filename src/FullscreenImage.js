@@ -240,6 +240,7 @@ const metaCenterItem = css`
 	padding: 8px 12px;
 	margin-bottom: 8px;
 	font-size: 1.5rem;
+	white-space: nowrap;
 	&:last-child {
 		margin-bottom: 0;
 	}
