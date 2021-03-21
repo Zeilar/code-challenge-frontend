@@ -315,6 +315,10 @@ const CloseButton = styled(Icon).attrs({ path: mdiClose })`
 	transform: none;
 	right: 30px;
 	top: 30px;
+	@media (max-width: 768px) {
+		top: 15px;
+		right: 15px;
+	}
 `;
 const Loading = styled(Icon).attrs({ path: mdiLoading, size: 3, spin: 1 })`
 	color: rgb(235 235 235);
