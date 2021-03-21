@@ -5,8 +5,9 @@ import Image from "./Image";
 import FullscreenImage from "./FullscreenImage";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { button } from "./styled-components";
-import { mdiAlert, mdiLoading } from "@mdi/js";
+import { mdiAlert, mdiLoading, mdiArrowDown } from "@mdi/js";
 import Icon from "@mdi/react";
+import { navigationButtons } from "./styled-components";
 
 export default function Images() {
 	const {
@@ -41,6 +42,10 @@ export default function Images() {
 		if (previousImage) {
 			setActiveImage(previousImage);
 		}
+	}
+
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	}
 
 	const fullscreenContainer = useOnclickOutside(() => {
@@ -125,6 +130,7 @@ export default function Images() {
 					</ErrorButton>
 				</ErrorContainer>
 			)}
+			{!fullscreen && <ScrollToTop onClick={scrollToTop} />}
 		</Wrapper>
 	);
 }
@@ -182,4 +188,14 @@ const Loading = styled(Icon).attrs({ path: mdiLoading, spin: 1 })`
 	width: 100px;
 	height: 100px;
 	margin: 50px auto;
+`;
+const ScrollToTop = styled(Icon).attrs({ path: mdiArrowDown })`
+	${navigationButtons}
+	transform: rotate(-180deg); // For some reason MDI has all arrow directions but up?
+	bottom: 30px;
+	right: 30px;
+	@media (max-width: 768px) {
+		bottom: 15px;
+		right: 15px;
+	}
 `;
