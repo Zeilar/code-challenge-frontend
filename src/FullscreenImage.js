@@ -22,7 +22,11 @@ export default function FullscreenImage({
 	nextImage,
 	close,
 }) {
-	const { loaded, fetching } = useImage(image.urls.regular);
+	const { loaded, fetching, error } = useImage(image.urls.regular);
+
+	if (error) {
+		alert("Error loading image");
+	}
 
 	const [imageFlipped, setImageFlipped] = useState(false);
 	const [downloading, setDownloading] = useState(false);
@@ -53,7 +57,6 @@ export default function FullscreenImage({
 	}, []);
 
 	useEffect(() => {
-		setImageFlipped(false);
 		document.addEventListener("keydown", keyHandler);
 		return () => {
 			document.removeEventListener("keydown", keyHandler);
@@ -69,7 +72,7 @@ export default function FullscreenImage({
 		if (blob) {
 			fileDownload(blob, `${image.id}.jpg`);
 		} else {
-			// set error
+			alert("Error downloading file");
 		}
 	}
 

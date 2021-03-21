@@ -5,7 +5,7 @@ import Image from "./Image";
 import FullscreenImage from "./FullscreenImage";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { button } from "./styled-components";
-import { mdiLoading } from "@mdi/js";
+import { mdiAlert, mdiLoading } from "@mdi/js";
 import Icon from "@mdi/react";
 
 export default function Images() {
@@ -53,10 +53,10 @@ export default function Images() {
 		);
 
 		// API only provides pagination data via headers
-		const headers = new Headers(response.headers);
-		const total = parseInt(headers.get("X-Total"));
-		const perPage = parseInt(headers.get("X-Per-Page"));
-		const amountOfPages = Math.ceil(total / perPage);
+		const headers = new Headers(response.headers),
+			total = parseInt(headers.get("X-Total")),
+			perPage = parseInt(headers.get("X-Per-Page")),
+			amountOfPages = Math.ceil(total / perPage);
 
 		return {
 			data: await response.json(),
@@ -117,7 +117,10 @@ export default function Images() {
 			{(status === "loading" || isFetchingNextPage) && <Loading />}
 			{error && !isFetching && (
 				<ErrorContainer>
-					<ErrorHeader>Error loading images</ErrorHeader>
+					<ErrorHeader>
+						<ErrorHeaderIcon />
+						Error loading images
+					</ErrorHeader>
 					<ErrorButton onClick={() => refetch()}>
 						Try again
 					</ErrorButton>
@@ -156,6 +159,17 @@ const ErrorContainer = styled.div`
 const ErrorHeader = styled.h3`
 	text-align: center;
 	color: black;
+	background-color: rgba(200, 0, 0, 0.5);
+	padding: 10px 20px;
+	border: 2px solid rgba(200, 0, 0, 0.25);
+	font-size: 1.5rem;
+	display: flex;
+	align-items: center;
+`;
+const ErrorHeaderIcon = styled(Icon).attrs({ path: mdiAlert })`
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-right: 5px;
 `;
 const ErrorButton = styled.button`
 	${button}
