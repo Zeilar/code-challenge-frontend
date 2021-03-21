@@ -31,20 +31,6 @@ export default function FullscreenImage({
 	const [imageFlipped, setImageFlipped] = useState(false);
 	const [downloading, setDownloading] = useState(false);
 
-	function keyHandler(e) {
-		switch (e.key) {
-			case "ArrowRight":
-				return goToNextImage();
-			case "ArrowLeft":
-				return goToPreviousImage();
-			case "ArrowDown":
-			case "ArrowUp":
-				return toggleFlip();
-			case "Escape":
-				return close();
-		}
-	}
-
 	function toggleFlip() {
 		setImageFlipped((p) => !p);
 	}
@@ -57,11 +43,25 @@ export default function FullscreenImage({
 	}, []);
 
 	useEffect(() => {
+		function keyHandler(e) {
+			switch (e.key) {
+				case "ArrowRight":
+					return goToNextImage();
+				case "ArrowLeft":
+					return goToPreviousImage();
+				case "ArrowDown":
+				case "ArrowUp":
+					return toggleFlip();
+				case "Escape":
+					return close();
+				default:
+			}
+		}
 		document.addEventListener("keydown", keyHandler);
 		return () => {
 			document.removeEventListener("keydown", keyHandler);
 		};
-	}, [image]);
+	}, [image, close, goToNextImage, goToPreviousImage]);
 
 	async function saveImage(e) {
 		e.stopPropagation();
@@ -178,6 +178,7 @@ const flippable = css`
 	backface-visibility: hidden;
 	transition: 0.4s;
 	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+	cursor: pointer;
 `;
 const Image = styled.img.attrs({ loading: "lazy" })`
 	${flippable}

@@ -64,14 +64,6 @@ export default function Images() {
 		};
 	}
 
-	function attemptToLoadMore() {
-		const scrollPosition = window.innerHeight + window.scrollY,
-			bottomPosition = document.body.offsetHeight;
-		if (scrollPosition >= bottomPosition * 0.8) {
-			fetchNextPage();
-		}
-	}
-
 	// Since every page result is in its own array due to React Query, combine the arrays to see which is previous or next
 	function mergeResultsArrays() {
 		const combined = [];
@@ -85,11 +77,18 @@ export default function Images() {
 	}
 
 	useEffect(() => {
+		function attemptToLoadMore() {
+			const scrollPosition = window.innerHeight + window.scrollY,
+				bottomPosition = document.body.offsetHeight;
+			if (scrollPosition >= bottomPosition * 0.8) {
+				fetchNextPage();
+			}
+		}
 		document.addEventListener("scroll", attemptToLoadMore);
 		return () => {
 			document.removeEventListener("scroll", attemptToLoadMore);
 		};
-	}, []);
+	}, [fetchNextPage]);
 
 	return (
 		<Wrapper>
