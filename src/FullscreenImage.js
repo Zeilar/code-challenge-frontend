@@ -185,6 +185,7 @@ const Image = styled.img.attrs({ loading: "lazy" })`
 	transform: perspective(2000px) rotateY(0);
 	object-fit: cover;
 	height: 100%;
+	user-select: none;
 	${({ imageFlipped }) =>
 		imageFlipped && "transform: perspective(2000px) rotateY(-180deg);"}
 `;
