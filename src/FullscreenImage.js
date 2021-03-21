@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { mdiArrowRight, mdiArrowLeft, mdiClose, mdiLoading } from "@mdi/js";
+import {
+	mdiArrowRight,
+	mdiArrowLeft,
+	mdiClose,
+	mdiLoading,
+	mdiDownload,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 import useImage from "./useImage";
 import fileDownload from "js-file-download";
@@ -92,7 +98,14 @@ export default function FullscreenImage({
 								onClick={saveImage}
 								disabled={downloading}
 							>
-								{downloading ? "Please wait..." : "Download"}
+								{downloading ? (
+									"Please wait..."
+								) : (
+									<>
+										<DownloadButtonIcon />
+										Download
+									</>
+								)}
 							</DownloadButton>
 							<MetaCenter>
 								<MetaCenterLeft>
@@ -287,6 +300,8 @@ const Loading = styled(Icon).attrs({ path: mdiLoading, size: 3, spin: 1 })`
 	color: rgb(235 235 235);
 `;
 const DownloadButton = styled.button`
+	display: flex;
+	align-items: center;
 	position: absolute;
 	text-transform: uppercase;
 	letter-spacing: 2px;
@@ -297,10 +312,15 @@ const DownloadButton = styled.button`
 	color: rgb(235 235 235);
 	background-color: rgba(0, 0, 0, 0.85);
 	font-weight: bold;
-	&:hover {
+	&:hover:not([disabled]) {
 		outline: 2px solid rgb(235 235 235);
 	}
 	&[disabled] {
 		cursor: wait;
 	}
+`;
+const DownloadButtonIcon = styled(Icon).attrs({ path: mdiDownload })`
+	width: 1rem;
+	height: 1rem;
+	margin-right: 5px;
 `;
