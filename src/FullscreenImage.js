@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { mdiArrowRight, mdiArrowLeft, mdiClose, mdiLoading } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -15,6 +15,8 @@ export default function FullscreenImage({
 }) {
 	const { loaded, fetching } = useImage(image.urls.regular);
 
+	const [imageFlipped, setImageFlipped] = useState(false);
+
 	function keyHandler(e) {
 		if (e.key === "ArrowRight") {
 			goToNextImage();
@@ -23,6 +25,10 @@ export default function FullscreenImage({
 		} else if (e.key === "Escape") {
 			close();
 		}
+	}
+
+	function toggleFlip() {
+		setImageFlipped((p) => !p);
 	}
 
 	useEffect(() => {
@@ -34,6 +40,7 @@ export default function FullscreenImage({
 	}, []);
 
 	useEffect(() => {
+		setImageFlipped(false);
 		document.addEventListener("keydown", keyHandler);
 		return () => {
 			document.removeEventListener("keydown", keyHandler);
@@ -56,14 +63,21 @@ export default function FullscreenImage({
 				{loaded && (
 					<>
 						<Image
+							onClick={toggleFlip}
 							src={image.urls.regular}
 							title={image.alt_description}
 							alt={image.alt_description}
 							ref={imageElement}
+							imageFlipped={imageFlipped}
 						/>
-						<ImageMeta>
+						<ImageMeta
+							src={image.urls.regular}
+							imageFlipped={imageFlipped}
+							onClick={toggleFlip}
+						>
 							<ImagePostedBy>
-								Posted by <b>{image.user.username}</b> on &nbsp;
+								Published by <b>{image.user.username}</b> on
+								&nbsp;
 								<AuthorLink href={image.links.html}>
 									Unsplash
 								</AuthorLink>
@@ -102,11 +116,33 @@ const ImageContainer = styled.article`
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	max-height: 80%;
+`;
+
+const flippable = css`
+	backface-visibility: hidden;
+	transition: 0.4s;
+`;
+
+const Image = styled.img.attrs({ loading: "lazy" })`
+	${flippable}
+	transform: perspective(2000px) rotateY(0);
+	object-fit: contain;
+	height: 100%;
+	user-select: none;
+	${({ imageFlipped }) =>
+		imageFlipped && "transform: perspective(2000px) rotateY(-180deg);"}
 `;
 
 const ImageMeta = styled.div`
+	${flippable}
+	transform: perspective(2000px) rotateY(180deg);
 	position: absolute;
 	width: 100%;
+	height: 100%;
+	background-color: rgb(235 235 235);
+	${({ imageFlipped }) =>
+		imageFlipped && "transform: perspective(2000px) rotateY(0);"}
 `;
 
 const ImagePostedBy = styled.p`
@@ -115,14 +151,13 @@ const ImagePostedBy = styled.p`
 	background-color: rgba(0, 0, 0, 0.75);
 `;
 
-const Image = styled.img.attrs({ loading: "lazy" })`
-	object-fit: contain;
-	height: 100%;
-	user-select: none;
-`;
-
 const AuthorLink = styled.a.attrs({ target: "_blank" })`
 	color: rgb(0, 127, 255);
+	font-weight: bold;
+	text-decoration: none;
+	&:hover {
+		text-decoration: underline;
+	}
 `;
 
 const navigationButtons = css`
