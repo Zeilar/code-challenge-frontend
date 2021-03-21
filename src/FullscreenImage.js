@@ -27,12 +27,16 @@ export default function FullscreenImage({
 	const [downloading, setDownloading] = useState(false);
 
 	function keyHandler(e) {
-		if (e.key === "ArrowRight") {
-			goToNextImage();
-		} else if (e.key === "ArrowLeft") {
-			goToPreviousImage();
-		} else if (e.key === "Escape") {
-			close();
+		switch (e.key) {
+			case "ArrowRight":
+				return goToNextImage();
+			case "ArrowLeft":
+				return goToPreviousImage();
+			case "ArrowDown":
+			case "ArrowUp":
+				return toggleFlip();
+			case "Escape":
+				return close();
 		}
 	}
 
@@ -177,7 +181,6 @@ const Image = styled.img.attrs({ loading: "lazy" })`
 	transform: perspective(2000px) rotateY(0);
 	object-fit: cover;
 	height: 100%;
-	user-select: none;
 	${({ imageFlipped }) =>
 		imageFlipped && "transform: perspective(2000px) rotateY(-180deg);"}
 `;
@@ -193,6 +196,7 @@ const ImageContainer = styled.article`
 /* Image meta */
 const ImageMeta = styled.aside`
 	${flippable}
+	user-select: none;
 	transform: perspective(2000px) rotateY(180deg);
 	position: absolute;
 	display: flex;
