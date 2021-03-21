@@ -1,69 +1,47 @@
-Frontend challenge
-====
+# Frontend challenge
 
-![](https://images.unsplash.com/photo-1573588028698-f4759befb09a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2690&q=80)
+## Main goal of the challenge was to make a clean robust app, that includes features such as:
 
-Unsplash is the internet’s premium source of freely-usable images. 
-Create a nice-looking application that allows browsing of curated images from Unsplash.
+-   [x] Use the Unsplash API.
+-   [x] Make a grid gallery using images from the Unsplash API.
+-   [x] Infinite scrolling using lazy load technique to fetch more images.
+-   [x] A fullscreen view of said gallery.
+-   [x] Fullscreen view should have navigation without closing it.
+-   [x] And of course the app should be responsive.
 
-# Requirements
+## There were some tech requirements, unfortunately I had to skip some as it would take too long learning and using them properly.
 
-- [ ] Use the Unsplash API - docs here to set up a developer account: https://unsplash.com/documentation.
+-   [x] React.
+-   [x] CSSinJS - I used Styled Components.
+-   [ ] Tests (The preferred choice would have been Jest).
+-   [ ] Linter - Not entirely sure how I did on this one, but I use the ESLint extension in VS Code and then format using Prettier.
 
-- [ ] We want to see a grid overview, use the GET /photos/photos endpoint from the Unsplash API to get a set of images.
-- [ ] The application should be responsive and work both in portrait and landscape modes, on both desktop and mobile.
-- [ ] The application should support infinite scrolling using a lazy-load to fetch new images as the user scrolls.
-- [ ] The user can click on a grid element to get a full-width representation of the image with additional meta data.
-- [ ] The user can navigate to previous or next full-width representation without having to close that view.
+## Choices and reasonings
 
-# Tech requirements
-- React
-- Tests (we like [Jest](https://jestjs.io))
-- Linter (we like [Prettier](https://prettier.io))
-- CSSinJS is a plus, but not a requirement ([JSS](https://cssinjs.org/react-jss/), [styled-components](https://www.styled-components.com))
+**Styled Components**
+This is nowadays my goto when it comes to CSS in React apps. I could go on and on about the pros of this library, it's simply amazing.
 
+**React-cool-onclickoutside**
+It's usually annoying doing this logic by yourself, that is checking if you clicked outside an element. This library is very small, and fast and easy to use.
 
-# Your challenge
-- Create a React app that satisfies all the requirements listed above. If you have ideas for nice-to-have features you are encouraged to add them. Surprise us! 
-- You can use any boilerplate and tools that you want to (NextJS, CRA etc) but we advice you to keep it simple. A clean, robust react app is what we're looking for, and we're usually in favor of using all available tools and tricks to get things done.
-- Modern browsers, no weird legacy
-- You can deploy your app on whatever cloud provider you wish (zeit, heroku, gcp etc)
+**JS-file-download**
+Nice small library for downloading contents. In this case I used it for downloading the original images from Unsplash.
 
-# Instructions
+**DayJS**
+I'm sure you've heard of, and probably even used, this library yourselves. It's one of the biggest and best new date/time libraries out there. I could have avoided using it, but I think the tradeoff of using the library is worth the little extra bundle size in this case.
 
-- Fork this repo
-- Build a clean and robust React app
-- Publish the app on your chosen cloud provider
-- Let us know that you've completed the challenge
+**MDI (Material Design Icons)**
+SVG/PNG icons database that has support for React components. I prefer to use this library when I want SVG icons in my projects. It's open source and already has a huge database of icons. Sometimes I do have to go outside this database for some niche icons, but for general use this library does the job.
 
+**React Query**
+A very robust React custom hook. It has virtually everything you'd want in a HTTP request. Unfortunately it made my architechture a bit awkward as every result is put into its own array, so I decided to merge all those into one single array to handle navigating to previous/next image easier. If the library has a way to fix this, I haven't been able to find that out yet.
 
-# When we talk
+And as mentioned, I would have tried to include the Prettier/ESLint requirements if I either had more experience with them or if there was more time.
 
-We expect you talk talk about
------------------------------
+## Deploy
 
-- Description of solution.
-- Reasoning behind your technical choices, including architectural. 
-- Trade-offs you might have made, anything you left out, or what you might do differently if you were to spend additional time on the project.
-- Link to to the hosted application where applicable.
-
-How we review
--------------
-
-Your application will be reviewed by our engineers. We do take into consideration your experience level.
-
-* **Architecture**: how clean is the separation of controls and data?
-* **Clarity**: does the README clearly and concisely explain the problem and solution? Are technical tradeoffs explained?
-* **Correctness**: does the application do what was asked? If there is anything missing, does the README explain why it is missing?
-* **Code quality**: is the code simple, easy to understand, and maintainable?  Are there any code smells or other red flags? Does object-oriented code follows principles such as the single responsibility principle? Is the coding style consistent with the language's guidelines? Is it consistent throughout the codebase?
-* **Security**: are there any obvious vulnerability?
-* **Testing**: how thorough are the automated tests? Will they be difficult to change if the requirements of the application were to change? Are there some unit and some integration tests?
-	* We're not looking for full coverage (given time constraint) but just trying to get a feel for your testing skills.
-* **UX**: is the web interface understandable and pleasing to use? Is the API intuitive?
-* **Technical choices**: do choices of libraries, databases, architecture etc. seem appropriate for the chosen application?
-
-
-
+The app is deployed on my personal VPS at https://unsplash.angelin.dev
+I bundled the app using CRA's `npm run build` script
 
 # License
 
