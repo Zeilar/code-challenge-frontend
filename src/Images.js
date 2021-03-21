@@ -4,13 +4,16 @@ import { useInfiniteQuery } from "react-query";
 import Image from "./Image";
 import FullscreenImage from "./FullscreenImage";
 import useOnclickOutside from "react-cool-onclickoutside";
+import { button } from "./styled-components";
+import { mdiLoading } from "@mdi/js";
+import Icon from "@mdi/react";
 
 export default function Images() {
 	const {
 		data,
 		error,
 		fetchNextPage,
-		hasNextPage,
+		isFetching,
 		isFetchingNextPage,
 		status,
 		refetch,
@@ -61,7 +64,13 @@ export default function Images() {
 		};
 	}
 
-	function attemptToLoadMore() {}
+	function attemptToLoadMore() {
+		const scrollPosition = window.innerHeight + window.scrollY,
+			bottomPosition = document.body.offsetHeight;
+		if (scrollPosition >= bottomPosition * 0.8) {
+			fetchNextPage();
+		}
+	}
 
 	// Since every page result is in its own array due to React Query, combine the arrays to see which is previous or next
 	function mergeResultsArrays() {
@@ -96,7 +105,6 @@ export default function Images() {
 				/>
 			)}
 			<ImagesWrapper>
-				<button onClick={() => fetchNextPage()}>More</button>
 				{status === "success" &&
 					combinedImagesArray.map((image, i) => (
 						<Image
@@ -106,12 +114,14 @@ export default function Images() {
 						/>
 					))}
 			</ImagesWrapper>
-			{(status === "loading" || isFetchingNextPage) && <p>Loading</p>}
-			{error && (
-				<div>
-					<h2>Error loading images</h2>
-					<button onClick={() => refetch()}>Try again</button>
-				</div>
+			{(status === "loading" || isFetchingNextPage) && <Loading />}
+			{error && !isFetching && (
+				<ErrorContainer>
+					<ErrorHeader>Error loading images</ErrorHeader>
+					<ErrorButton onClick={() => refetch()}>
+						Try again
+					</ErrorButton>
+				</ErrorContainer>
 			)}
 		</Wrapper>
 	);
@@ -125,8 +135,8 @@ const Wrapper = styled.div`
 
 const ImagesWrapper = styled.div`
 	display: grid;
-	grid-template-columns: repeat(5, 225px);
-	grid-auto-rows: 150px;
+	grid-template-columns: repeat(3, 400px);
+	grid-auto-rows: 250px;
 	grid-gap: 15px;
 	margin: 15px;
 	@media (max-width: 1200px) {
@@ -136,4 +146,29 @@ const ImagesWrapper = styled.div`
 		grid-template-columns: repeat(2, 160px);
 		grid-auto-rows: 100px;
 	}
+`;
+
+const ErrorContainer = styled.div`
+	margin: 50px;
+	display: flex;
+	flex-direction: column;
+`;
+const ErrorHeader = styled.h3`
+	text-align: center;
+	color: black;
+`;
+const ErrorButton = styled.button`
+	${button}
+	margin-top: 10px;
+	background-color: white;
+	border-color: rgb(30 30 30);
+	&:hover {
+		background-color: rgb(30 30 30);
+		color: white;
+	}
+`;
+const Loading = styled(Icon).attrs({ path: mdiLoading, spin: 1 })`
+	width: 100px;
+	height: 100px;
+	margin: 50px auto;
 `;

@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
 import {
 	mdiArrowRight,
 	mdiArrowLeft,
@@ -7,10 +5,13 @@ import {
 	mdiLoading,
 	mdiDownload,
 } from "@mdi/js";
+import { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
 import Icon from "@mdi/react";
 import useImage from "./useImage";
 import fileDownload from "js-file-download";
 import dayjs from "dayjs";
+import { button } from "./styled-components";
 
 export default function FullscreenImage({
 	image = {},
@@ -45,10 +46,9 @@ export default function FullscreenImage({
 	}
 
 	useEffect(() => {
-		const body = document.querySelector("body");
-		body.style.overflow = "hidden";
+		document.body.style.overflow = "hidden";
 		return () => {
-			body.style.overflow = null;
+			document.body.style.overflow = null;
 		};
 	}, []);
 
@@ -311,18 +311,15 @@ const Loading = styled(Icon).attrs({ path: mdiLoading, size: 3, spin: 1 })`
 	color: rgb(235 235 235);
 `;
 const DownloadButton = styled.button`
+	${button}
 	display: flex;
 	align-items: center;
 	position: absolute;
-	text-transform: uppercase;
-	letter-spacing: 2px;
 	top: 15px;
 	right: 15px;
-	padding: 10px;
 	border: 0;
 	color: rgb(235 235 235);
 	background-color: rgba(0, 0, 0, 0.85);
-	font-weight: bold;
 	&:hover:not([disabled]) {
 		outline: 2px solid rgb(235 235 235);
 	}
