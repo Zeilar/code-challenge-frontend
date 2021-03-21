@@ -8,12 +8,6 @@ export const button = css`
 	padding: 10px;
 `;
 export const navigationButtons = css`
-	${({ disabled }) =>
-		disabled &&
-		`
-        opacity: 0;
-        pointer-events: none;
-    `}
 	position: fixed;
 	color: rgb(235 235 235);
 	background-color: rgba(0, 0, 0, 0.85);
@@ -23,6 +17,10 @@ export const navigationButtons = css`
 	margin: auto 0;
 	z-index: 1000;
 	transform: translateY(-50%);
+	&.disabled {
+		opacity: 0;
+		pointer-events: none;
+	}
 	&:focus,
 	&:hover {
 		outline: 2px solid rgb(235 235 235);

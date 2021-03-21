@@ -11,7 +11,7 @@ import Icon from "@mdi/react";
 import useImage from "./useImage";
 import fileDownload from "js-file-download";
 import dayjs from "dayjs";
-import { button } from "./styled-components";
+import { button, navigationButtons } from "./styled-components";
 
 export default function FullscreenImage({
 	image = {},
@@ -82,7 +82,7 @@ export default function FullscreenImage({
 				<CloseButton onClick={close} />
 				<PreviousButton
 					onClick={goToPreviousImage}
-					disabled={!Boolean(previousImage)}
+					className={!Boolean(previousImage) ? "disabled" : null}
 				>
 					Previous
 				</PreviousButton>
@@ -90,15 +90,15 @@ export default function FullscreenImage({
 				{loaded && (
 					<>
 						<Image
+							className={imageFlipped ? "flipped" : null}
 							onClick={toggleFlip}
 							src={image.urls.regular}
 							title={image.alt_description}
 							alt={image.alt_description}
-							imageFlipped={imageFlipped}
 						/>
 						<ImageMeta
+							className={imageFlipped ? "flipped" : null}
 							src={image.urls.regular}
-							imageFlipped={imageFlipped}
 							onClick={toggleFlip}
 						>
 							<DownloadButton
@@ -151,7 +151,7 @@ export default function FullscreenImage({
 				)}
 				<NextButton
 					onClick={goToNextImage}
-					disabled={!Boolean(nextImage)}
+					className={!Boolean(nextImage) ? "disabled" : null}
 				>
 					Next
 				</NextButton>
@@ -186,8 +186,9 @@ const Image = styled.img.attrs({ loading: "lazy" })`
 	object-fit: cover;
 	height: 100%;
 	user-select: none;
-	${({ imageFlipped }) =>
-		imageFlipped && "transform: perspective(2000px) rotateY(-180deg);"}
+	&.flipped {
+		transform: perspective(2000px) rotateY(-180deg);
+	}
 `;
 const ImageContainer = styled.article`
 	display: flex;
@@ -215,6 +216,9 @@ const ImageMeta = styled.aside`
 	background-position: center;
 	background-image: url("${({ src }) => src}");
 	color: rgb(235 235 235);
+	&.flipped {
+		transform: perspective(2000px) rotateY(0);
+	}
 	&::before {
 		content: "";
 		position: absolute;
@@ -225,8 +229,6 @@ const ImageMeta = styled.aside`
 		background-color: rgba(0, 0, 0, 0.75);
 		z-index: -1;
 	}
-	${({ imageFlipped }) =>
-		imageFlipped && "transform: perspective(2000px) rotateY(0);"}
 `;
 const MetaCenter = styled.div`
 	display: flex;
@@ -271,31 +273,6 @@ const MetaCenterRightItem = styled.p`
 `;
 
 /* Navigation & interactives */
-const navigationButtons = css`
-	${({ disabled }) =>
-		disabled &&
-		`
-        opacity: 0;
-        pointer-events: none;
-    `}
-	position: fixed;
-	color: rgb(235 235 235);
-	background-color: rgba(0, 0, 0, 0.85);
-	width: 50px;
-	height: 50px;
-	cursor: pointer;
-	margin: auto 0;
-	z-index: 1000;
-	transform: translateY(-50%);
-	&:focus,
-	&:hover {
-		outline: 2px solid rgb(235 235 235);
-	}
-	@media (max-width: 768px) {
-		width: 35px;
-		height: 35px;
-	}
-`;
 const PreviousButton = styled(Icon).attrs({ path: mdiArrowLeft })`
 	${navigationButtons}
 	top: 50%;
