@@ -229,8 +229,14 @@ const metaCenterColumn = css`
 const metaCenterItem = css`
 	padding: 8px 12px;
 	margin-bottom: 8px;
+	font-size: 1.5rem;
 	&:last-child {
 		margin-bottom: 0;
+	}
+	@media (max-width: 768px) {
+		font-size: 0.85rem;
+		padding: 4px 8px;
+		margin-bottom: 5px;
 	}
 `;
 const MetaCenterLeft = styled.div`
