@@ -135,7 +135,6 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 `;
-
 const ImagesWrapper = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 400px);
@@ -150,7 +149,6 @@ const ImagesWrapper = styled.div`
 		grid-auto-rows: 100px;
 	}
 `;
-
 const ErrorContainer = styled.div`
 	margin: 50px;
 	display: flex;

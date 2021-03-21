@@ -228,10 +228,13 @@ const ImageMeta = styled.aside`
 `;
 const MetaCenter = styled.div`
 	display: flex;
+	position: relative;
+	align-items: center;
 `;
 const metaCenterColumn = css`
 	display: flex;
 	flex-direction: column;
+	position: absolute;
 `;
 const metaCenterItem = css`
 	padding: 8px 12px;
@@ -248,11 +251,13 @@ const metaCenterItem = css`
 `;
 const MetaCenterLeft = styled.div`
 	${metaCenterColumn}
+	right: 0;
 `;
 const MetaCenterLeftItem = styled.p`
 	${metaCenterItem}
 	border-right: 2px solid rgb(235 235 235);
 	text-align: right;
+	left: 0;
 `;
 const MetaCenterRight = styled.div`
 	${metaCenterColumn}

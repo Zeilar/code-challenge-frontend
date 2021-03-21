@@ -4,7 +4,7 @@ export default function Image({ image = {}, setActive }) {
 	return (
 		<Wrapper onClick={setActive}>
 			<GridThumbnail
-				src={image.urls.small} // wanted to use thumb but it seems they only allow up to 30 images per page
+				src={image.urls.small} // wanted to use thumb but it seems Unsplash only allows up to ~30 images per page
 				alt={image.alt_description}
 				title={image.alt_description}
 			/>
@@ -21,7 +21,6 @@ const Wrapper = styled.div`
 		transform: scale(1.05);
 	}
 `;
-
 const GridThumbnail = styled.img`
 	object-fit: cover;
 	width: 100%;

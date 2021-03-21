@@ -25,7 +25,6 @@ const Banner = styled.header`
 	justify-content: center;
 	align-items: center;
 `;
-
 const BannerTitle = styled.h1`
 	color: rgb(235 235 235);
 `;
