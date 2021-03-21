@@ -71,8 +71,8 @@ export default function FullscreenImage({
 
 	return (
 		<Wrapper>
-			<CloseButton onClick={close} />
 			<ImageContainer ref={forwardRef}>
+				<CloseButton onClick={close} />
 				<PreviousButton
 					onClick={goToPreviousImage}
 					disabled={!Boolean(previousImage)}
