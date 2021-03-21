@@ -24,6 +24,7 @@ export default function Images() {
 
 	const [activeImage, setActiveImage] = useState();
 	const [fullscreen, setFullscreen] = useState(false);
+	const [scrollToTopVisible, setScrollToTopVisible] = useState(false);
 
 	const combinedImagesArray = mergeResultsArrays();
 	const indexOfActiveImage = combinedImagesArray.findIndex(
@@ -83,6 +84,7 @@ export default function Images() {
 
 	useEffect(() => {
 		function attemptToLoadMore() {
+			setScrollToTopVisible(window.scrollY >= 1500 ? true : false);
 			const scrollPosition = window.innerHeight + window.scrollY,
 				bottomPosition = document.body.offsetHeight;
 			if (scrollPosition >= bottomPosition * 0.8) {
@@ -130,7 +132,12 @@ export default function Images() {
 					</ErrorButton>
 				</ErrorContainer>
 			)}
-			{!fullscreen && <ScrollToTop onClick={scrollToTop} />}
+			{!fullscreen && (
+				<ScrollToTop
+					onClick={scrollToTop}
+					className={scrollToTopVisible ? "visible" : null}
+				/>
+			)}
 		</Wrapper>
 	);
 }
@@ -192,8 +199,14 @@ const Loading = styled(Icon).attrs({ path: mdiLoading, spin: 1 })`
 const ScrollToTop = styled(Icon).attrs({ path: mdiArrowDown })`
 	${navigationButtons}
 	transform: rotate(-180deg); // For some reason MDI has all arrow directions but up?
+	transition: 0.25s;
 	bottom: 30px;
 	right: 30px;
+	opacity: 0;
+	&.visible {
+		opacity: 1;
+		pointer-events: none;
+	}
 	@media (max-width: 768px) {
 		bottom: 15px;
 		right: 15px;
