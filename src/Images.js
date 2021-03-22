@@ -83,17 +83,20 @@ export default function Images() {
 	}
 
 	useEffect(() => {
-		function attemptToLoadMore() {
+		function scrollHandler() {
 			setScrollToTopVisible(window.scrollY >= 1500 ? true : false);
+
+			// Load more if scolled past 80% of the document height
 			const scrollPosition = window.innerHeight + window.scrollY,
 				bottomPosition = document.body.offsetHeight;
+
 			if (scrollPosition >= bottomPosition * 0.8) {
 				fetchNextPage();
 			}
 		}
-		document.addEventListener("scroll", attemptToLoadMore);
+		document.addEventListener("scroll", scrollHandler);
 		return () => {
-			document.removeEventListener("scroll", attemptToLoadMore);
+			document.removeEventListener("scroll", scrollHandler);
 		};
 	}, [fetchNextPage]);
 

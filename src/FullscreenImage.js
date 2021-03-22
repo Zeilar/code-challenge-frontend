@@ -66,7 +66,7 @@ export default function FullscreenImage({
 	async function saveImage(e) {
 		e.stopPropagation();
 		setDownloading(true);
-		const response = await fetch(image.urls.raw);
+		const response = await fetch("image.urls.raw");
 		const blob = await response.blob();
 		setDownloading(false);
 		if (blob.type === "image/jpeg") {
