@@ -69,7 +69,7 @@ export default function FullscreenImage({
 		const response = await fetch(image.urls.raw);
 		const blob = await response.blob();
 		setDownloading(false);
-		if (blob) {
+		if (blob.type === "image/jpeg") {
 			fileDownload(blob, `${image.id}.jpg`);
 		} else {
 			alert("Error downloading file");
