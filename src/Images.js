@@ -26,7 +26,9 @@ export default function Images() {
 	const [fullscreen, setFullscreen] = useState(false);
 	const [scrollToTopVisible, setScrollToTopVisible] = useState(false);
 
+	// Combined the query result arrays from React Query to avoid some serious headaches
 	const combinedImagesArray = mergeResultsArrays();
+
 	const indexOfActiveImage = combinedImagesArray.findIndex(
 		(image) => image.id === activeImage?.id
 	);
@@ -84,12 +86,13 @@ export default function Images() {
 
 	useEffect(() => {
 		function scrollHandler() {
+			// Hide scroll-to-top button if scrolled past 1500 pixels
 			setScrollToTopVisible(window.scrollY >= 1500 ? true : false);
 
-			// Load more if scolled past 80% of the document height
 			const scrollPosition = window.innerHeight + window.scrollY,
 				bottomPosition = document.body.offsetHeight;
 
+			// Load more if scolled past 80% of the document height
 			if (scrollPosition >= bottomPosition * 0.8) {
 				fetchNextPage();
 			}

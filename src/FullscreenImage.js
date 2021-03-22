@@ -36,6 +36,7 @@ export default function FullscreenImage({
 	}
 
 	useEffect(() => {
+		// Remove scroll completely while in fullscreen mode
 		document.body.style.overflow = "hidden";
 		return () => {
 			document.body.style.overflow = null;
@@ -65,10 +66,12 @@ export default function FullscreenImage({
 
 	async function saveImage(e) {
 		e.stopPropagation();
+
 		setDownloading(true);
 		const response = await fetch("image.urls.raw");
 		const blob = await response.blob();
 		setDownloading(false);
+
 		if (blob.type === "image/jpeg") {
 			fileDownload(blob, `${image.id}.jpg`);
 		} else {
