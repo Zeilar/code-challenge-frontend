@@ -68,7 +68,7 @@ export default function FullscreenImage({
 		e.stopPropagation();
 
 		setDownloading(true);
-		const response = await fetch("image.urls.raw");
+		const response = await fetch(image.urls.raw);
 		const blob = await response.blob();
 		setDownloading(false);
 
