@@ -6,6 +6,7 @@ export const button = css`
 	font-weight: bold;
 	text-transform: uppercase;
 	padding: 10px;
+	font-family: "Open Sans";
 `;
 export const navigationButtons = css`
 	position: fixed;

@@ -7,14 +7,14 @@ const queryClient = new QueryClient();
 
 export default function App() {
 	return (
-		<div className="App">
+		<main className="App">
 			<Banner>
-				<BannerTitle>Unsplash images</BannerTitle>
+				<BannerTitle>Stock Art</BannerTitle>
 			</Banner>
 			<QueryClientProvider client={queryClient}>
 				<Images />
 			</QueryClientProvider>
-		</div>
+		</main>
 	);
 }
 
@@ -27,4 +27,6 @@ const Banner = styled.header`
 `;
 const BannerTitle = styled.h1`
 	color: rgb(235 235 235);
+	letter-spacing: 3px;
+	font-family: "Lobster";
 `;
