@@ -31,4 +31,7 @@ const BannerTitle = styled.h1`
 	font-family: "Lobster";
 	color: white;
 	font-size: 3rem;
+	@media (max-width: 768px) {
+		font-size: 2rem;
+	}
 `;
