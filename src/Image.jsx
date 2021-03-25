@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export default function Image({ image = {}, setActive }) {
+export default function Image({ image = {}, setActive, ...props }) {
 	return (
-		<Wrapper onClick={setActive}>
+		<Wrapper onClick={setActive} {...props}>
 			<GridThumbnail
 				src={image.urls.small} // Wanted to use thumb size but it seems Unsplash only allows up to ~30 images per page
 				alt={image.alt_description}
@@ -13,6 +13,17 @@ export default function Image({ image = {}, setActive }) {
 }
 
 const Wrapper = styled.div`
+	@keyframes fade {
+		from {
+			transform: translateY(15px);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+	animation: fade 0.5s ease-out forwards;
 	overflow: hidden;
 	transition: transform 0.1s linear;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
