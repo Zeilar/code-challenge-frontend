@@ -20,7 +20,7 @@ export default function App() {
 
 const Banner = styled.header`
 	background-color: rgb(20 20 20);
-	padding: 50px;
+	padding: 25px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -30,4 +30,5 @@ const BannerTitle = styled.h1`
 	letter-spacing: 3px;
 	font-family: "Lobster";
 	color: white;
+	font-size: 3rem;
 `;
