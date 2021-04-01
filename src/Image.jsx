@@ -25,15 +25,15 @@ const Wrapper = styled.div`
 	}
 	animation: fade 0.5s ease-out forwards;
 	overflow: hidden;
-	transition: transform 0.1s linear;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
 	cursor: pointer;
-	&:hover {
-		transform: scale(1.05);
-	}
 `;
 const GridThumbnail = styled.img`
 	object-fit: cover;
+	transition: 0.25s;
 	width: 100%;
 	height: 100%;
+	&:hover {
+		transform: scale(1.1);
+	}
 `;
