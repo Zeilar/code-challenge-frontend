@@ -32,7 +32,7 @@ And as mentioned, I would have tried to include the Prettier/ESLint requirements
 
 ## Deploy
 
-The app is deployed on my personal VPS at https://unsplash.angelin.dev.
+The app is deployed on my personal VPS at https://stockart.angelin.dev.
 I bundled the app using CRA's `npm run build` script.
 
 # License
