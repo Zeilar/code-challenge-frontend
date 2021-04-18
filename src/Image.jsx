@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
 	cursor: pointer;
 `;
-const GridThumbnail = styled.img`
+const GridThumbnail = styled.img.attrs({ loading: "lazy" })`
 	object-fit: cover;
 	transition: 0.25s;
 	width: 100%;
